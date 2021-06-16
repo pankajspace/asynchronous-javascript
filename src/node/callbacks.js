@@ -26,7 +26,6 @@
 
 // q2
 // The below code swallows the error and doesn't pass it up the chain, make it pass the error up the stack using the next callback.
-// var templateContent = fs.readFileSync(path.join(__dirname, '../templates') + '/my-template.html', 'utf8');
 // const fs = require("fs");
 // function readFileThenDo(next) {
 //   fs.readFile("./blah.nofile", (err, data) => {
