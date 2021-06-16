@@ -1,2 +1,2 @@
 language = "nodejs"
-run = "node src/node/callbacks-quiz.js"
+run = "node src/node/callbacks.js"
