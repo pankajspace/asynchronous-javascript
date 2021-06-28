@@ -52,6 +52,7 @@
 //   );
 
 
+
 // q2
 // Load a file from disk using readFile and then compress it using the async zlib node library, use a promise chain to process this work. 
 // Load it then zip it and then print it to screen
@@ -85,6 +86,7 @@
 // }, error => {
 //   console.error("readFile failed: ", error);
 // });
+
 
 
 // q3
@@ -151,6 +153,8 @@
 //   console.log("gzip data: ", data);
 // }).catch(error => {
 //   console.error("Failed: ", error);
+// }).finally(() => {
+//   console.log("Cleaning up.");
 // })
 
 
@@ -161,6 +165,7 @@
 //   return new Promise(resolve => setTimeout(resolve, sleep));
 // }
 // readFileFake(5000); // This resolves a promise after 5 seconds, pretend it's a large file being read from disk
+
 
 
 // q6
