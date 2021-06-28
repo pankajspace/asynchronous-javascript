@@ -76,18 +76,50 @@
 //   });
 // }
 // readFile(filePath, "utf-8").then(data => {
+//   console.log("readFile data: ", data);
 //   gzip(data).then(data => {
-//     console.error("gzip data", data);
+//     console.log("gzip data: ", data);
 //   }, error => {
-//     console.error("readFile failed", error);
+//     console.error("gzip failed: ", error);
 //   })
 // }, error => {
-//   console.error("readFile failed", error);
+//   console.error("readFile failed: ", error);
 // });
 
 
 // q3
 // Convert the previous code so that it now chains the promise as well.
+const fs = require("fs");
+const path = require("path");
+const zlib = require("zlib");
+const filePath = path.join(__dirname, "./files") + "/demofile.txt";
+function gzip(data) {
+  return new Promise((resolve, reject) => {
+    zlib.gzip(data, (error, data) => {
+      if (error) { reject(error) };
+      resolve(data);
+    });
+  });
+}
+function readFile(filePath, encoding) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, encoding, (error, data) => {      
+      if (error) { reject(error) };
+      resolve(data);
+    });
+  });
+}
+readFile(filePath, "utf-8").then(data => {
+  console.log("readFile data: ", data);
+  return gzip(data);
+}, error => {
+  console.error("readFile failed: ", error);
+}).then(data => {
+  console.log("gzip data: ", data);
+}, error => {
+  console.error("gzip failed: ", error);
+});
+
 
 
 // q4
