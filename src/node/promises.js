@@ -164,7 +164,21 @@
 // function readFileFake(sleep) {
 //   return new Promise(resolve => setTimeout(resolve, sleep));
 // }
-// readFileFake(5000); // This resolves a promise after 5 seconds, pretend it's a large file being read from disk
+// readFileFake(2000); // This resolves a promise after 5 seconds, pretend it's a large file being read from disk
+
+// q5a
+// function readFileFake(sleep) {
+//   return new Promise(resolve => setTimeout(resolve, sleep, "resolved"));
+// }
+// function timeout(sleep) {
+//   return new Promise((resolve, reject) => setTimeout(reject, sleep, "rejected"));
+// }
+// readFileFake(5000);
+// Promise.race([readFileFake(2000), timeout(1000)]).then((data) => {
+//   console.log("Resolved: ", data);
+// }).catch((error) => {
+//   console.error("Failed: ", error);
+// });
 
 
 
