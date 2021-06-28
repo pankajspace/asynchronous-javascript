@@ -36,42 +36,54 @@
 //   );
 
 // q1a2
-const fs = require("fs");
-const path = require("path");
-const util = require("util");
-const readFile = util.promisify(fs.readFile);
-const filePath = path.join(__dirname, "./files") + "/demofile.txt";
-readFile(filePath, "utf-8")
-  .then(
-    (data) => {
-      console.log("readFile: ", data);
-    },
-    (err) => {
-      console.log("readFile: ", err);
-    }
-  );
+// const fs = require("fs");
+// const path = require("path");
+// const util = require("util");
+// const readFile = util.promisify(fs.readFile);
+// const filePath = path.join(__dirname, "./files") + "/demofile.txt";
+// readFile(filePath, "utf-8")
+//   .then(
+//     (data) => {
+//       console.log("readFile: ", data);
+//     },
+//     (err) => {
+//       console.log("readFile: ", err);
+//     }
+//   );
 
 
 // q2
-// Load a file from disk using readFile and then compress it using the async zlib node library, use a promise chain to process this work.
-// const fs = require("fs");
-// const zlib = require("zlib");
-// function zlibPromise(data) {
-//   zlib.gzip(data, (error, result) => {
-//     //TODO
-//   });
-// }
-// function readFile(filename, encoding) {
-//   return new Promise((resolve, reject) => {
-//     fs.readFile(filename, encoding, (err, data) => {
-//       if (err) reject(err);
-//       resolve(data);
-//     });
-//   });
-// }
-// readFile("./files/demofile.txt", "utf-8")
-//     .then(...) // --> Load it then zip it and then print it to screen
-// });
+// Load a file from disk using readFile and then compress it using the async zlib node library, use a promise chain to process this work. 
+// Load it then zip it and then print it to screen
+const fs = require("fs");
+const path = require("path");
+const zlib = require("zlib");
+const filePath = path.join(__dirname, "./files") + "/demofile.txt";
+function gzip(data) {
+  return new Promise((resolve, reject) => {
+    zlib.gzip(data, (error, data) => {
+      if (error) { reject(error) };
+      resolve(data);
+    });
+  });
+}
+function readFile(filePath, encoding) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, encoding, (error, data) => {
+      if (error) { reject(error) };
+      resolve(data);
+    });
+  });
+}
+readFile(filePath, "utf-8").then(data => {
+  gzip(data).then(data => {
+    console.error("gzip data", data);
+  }, error => {
+    console.error("readFile failed", error);
+  })
+}, error => {
+  console.error("readFile failed", error);
+});
 
 
 // q3
