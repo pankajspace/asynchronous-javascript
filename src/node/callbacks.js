@@ -73,16 +73,16 @@
 // Or if the error is serious, you can throw the error as soon as you see it.
 // try..catch desn't work as you expect with callbacks, it only really works with synchronous code.
 // By the time the callback throws the error we have moved on from the try..catch, the throw happens in the root scope and will just cause the program to exit.
-const path = require("path");
-const filePath = path.join(__dirname, "./files") + "/demofile.txt";
-function readFileThenDo(next) {
-  fs.readFile(filePath, "utf8", (err, data) => {
-    if (err) throw err;
-    next(null, data);
-  });
-}
-try {
-  readFileThenDo((_, data) => console.log(data));
-} catch (err) {
-  console.error(err);
-}
+// const path = require("path");
+// const filePath = path.join(__dirname, "./files") + "/demofile.txt";
+// function readFileThenDo(next) {
+//   fs.readFile(filePath, "utf8", (err, data) => {
+//     if (err) throw err;
+//     next(null, data);
+//   });
+// }
+// try {
+//   readFileThenDo((_, data) => console.log(data));
+// } catch (err) {
+//   console.error(err);
+// }
