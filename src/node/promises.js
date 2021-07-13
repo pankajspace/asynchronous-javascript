@@ -173,8 +173,7 @@
 // function timeout(sleep) {
 //   return new Promise((resolve, reject) => setTimeout(reject, sleep, "rejected"));
 // }
-// readFileFake(5000);
-// Promise.race([readFileFake(2000), timeout(1000)]).then((data) => {
+// Promise.race([readFileFake(2000), timeout(3000)]).then((data) => {
 //   console.log("Resolved: ", data);
 // }).catch((error) => {
 //   console.error("Failed: ", error);
@@ -186,11 +185,11 @@
 // Create a process flow which publishes a file from a server, then realises the user needs to login, then makes a login request, the whole chain should error out if it takes longer than 1 seconds. Use catch to handle errors and timeouts.
 // function authenticate() {
 //   console.log("Authenticating");
-//   return new Promise(resolve => setTimeout(resolve, 2000, { status: 200 }));
+//   return new Promise(resolve => setTimeout(resolve, 1000, { status: 200 }));
 // }
 // function publish() {
 //   console.log("Publishing");
-//   return new Promise(resolve => setTimeout(resolve, 2000, { status: 403 }));
+//   return new Promise(resolve => setTimeout(resolve, 1000, { status: 403 }));
 // }
 // function timeout(sleep) {
 //   return new Promise((resolve, reject) => setTimeout(reject, sleep, "timeout"));
@@ -199,3 +198,67 @@
 //   .then(...)
 //   .then(...)
 //   .catch(...);
+
+// q6a
+// function authenticate() {
+//   console.log("Authenticating");
+//   return new Promise(resolve => setTimeout(resolve, 1000, { status: 200 }));
+// }
+// function publish() {
+//   console.log("Publishing");
+//   return new Promise(resolve => setTimeout(resolve, 1000, { status: 403 }));
+// }
+// function timeout(sleep) {
+//   return new Promise((resolve, reject) => setTimeout(reject, sleep, "timeout"));
+// }
+// Promise.race([publish(), timeout(3000)])
+//   .then(res => {
+//     if (res.status === 403) {
+//       return authenticate();
+//     }
+//     return res;
+//   })
+//   .then(res => {
+//     // Process save responce
+//     console.log("Published");
+//   })
+//   .catch(err => {
+//     if (err === "timeout") {
+//       console.error("Request timed out");
+//     } else {
+//       console.error(err);
+//     }
+//   });
+
+// q6b
+function authenticate() {
+  console.log("Authenticating");
+  return new Promise(resolve => setTimeout(resolve, 1000, { status: 200 }));
+}
+function publish() {
+  console.log("Publishing");
+  return new Promise(resolve => setTimeout(resolve, 1000, { status: 403 }));
+}
+function timeout(sleep) {
+  return new Promise((resolve, reject) => setTimeout(reject, sleep, "timeout"));
+}
+function safePublish() {
+  return publish().then(res => {
+    if (res.status === 403) {
+      return authenticate();
+    }
+    return res;
+  });
+}
+Promise.race([safePublish(), timeout(3000)])
+  .then(res => {
+    // Process save responce
+    console.log("Published");
+  })
+  .catch(err => {
+    if (err === "timeout") {
+      console.error("Request timed out");
+    } else {
+      console.error(err);
+    }
+  });
