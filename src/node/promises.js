@@ -231,34 +231,34 @@
 //   });
 
 // q6b
-function authenticate() {
-  console.log("Authenticating");
-  return new Promise(resolve => setTimeout(resolve, 1000, { status: 200 }));
-}
-function publish() {
-  console.log("Publishing");
-  return new Promise(resolve => setTimeout(resolve, 1000, { status: 403 }));
-}
-function timeout(sleep) {
-  return new Promise((resolve, reject) => setTimeout(reject, sleep, "timeout"));
-}
-function safePublish() {
-  return publish().then(res => {
-    if (res.status === 403) {
-      return authenticate();
-    }
-    return res;
-  });
-}
-Promise.race([safePublish(), timeout(3000)])
-  .then(res => {
-    // Process save responce
-    console.log("Published");
-  })
-  .catch(err => {
-    if (err === "timeout") {
-      console.error("Request timed out");
-    } else {
-      console.error(err);
-    }
-  });
+// function authenticate() {
+//   console.log("Authenticating");
+//   return new Promise(resolve => setTimeout(resolve, 1000, { status: 200 }));
+// }
+// function publish() {
+//   console.log("Publishing");
+//   return new Promise(resolve => setTimeout(resolve, 1000, { status: 403 }));
+// }
+// function timeout(sleep) {
+//   return new Promise((resolve, reject) => setTimeout(reject, sleep, "timeout"));
+// }
+// function safePublish() {
+//   return publish().then(res => {
+//     if (res.status === 403) {
+//       return authenticate();
+//     }
+//     return res;
+//   });
+// }
+// Promise.race([safePublish(), timeout(3000)])
+//   .then(res => {
+//     // Process save responce
+//     console.log("Published");
+//   })
+//   .catch(err => {
+//     if (err === "timeout") {
+//       console.error("Request timed out");
+//     } else {
+//       console.error(err);
+//     }
+//   });
