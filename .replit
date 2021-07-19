@@ -1,2 +1,2 @@
 language = "nodejs"
-run = "node src/node/async-await.js"
+run = "node src/node/generators.js"
