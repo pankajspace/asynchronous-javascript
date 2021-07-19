@@ -19,17 +19,17 @@ const fs = require("fs");
 const path = require("path");
 const readFile = util.promisify(fs.readFile);
 function* fileLoader(files) {
-  for (let file of files) {
-    yield Promise.resolve(readFile(file, "utf-8"));
+  const promises = files.map(file => readFile(file, "utf-8"));
+  for (let promise of promises) {
+    yield promise;
   }
 }
+const arrFiles = [
+  path.join(__dirname, "./files/demofile.txt"),
+  path.join(__dirname, "./files/demofile2.txt")
+];
 (async () => {
-  for await (let contents of fileLoader(
-    [
-      path.join(__dirname, "./files/demofile.txt"),
-      path.join(__dirname, "./files/demofile2.txt")
-    ]
-  )) {
+  for await (let contents of fileLoader(arrFiles)) {
     console.log(contents);
   }
 })(); 
