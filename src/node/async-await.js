@@ -10,19 +10,20 @@
 //   console.log(values);
 // });
 
-// q1 a
-const fs = require("fs");
-const path = require("path");
-const util = require("util");
-const readFile = util.promisify(fs.readFile);
-const file1Path = path.join(__dirname, "./files") + "/demofile.txt";
-const file2Path = path.join(__dirname, "./files") + "/demofile2.txt";
-const files = [file1Path, file2Path];
-(async function() {
-  let promises = files.map(name => readFile(name, { encoding: "utf8" }));
-  let values = await Promise.all(promises);
-  console.log(values);
-}())
+// q1a
+// const fs = require("fs");
+// const path = require("path");
+// const util = require("util");
+// const readFile = util.promisify(fs.readFile);
+// const file1Path = path.join(__dirname, "./files") + "/demofile.txt";
+// const file2Path = path.join(__dirname, "./files") + "/demofile2.txt";
+// const files = [file1Path, file2Path];
+// (async function() {
+//   let promises = files.map(name => readFile(name, { encoding: "utf8" }));
+//   let values = await Promise.all(promises);
+//   console.log(values);
+// }())
+
 
 
 // q2
@@ -44,3 +45,32 @@ const files = [file1Path, file2Path];
 //     console.log(x);
 //   }
 // })();
+
+// q2a
+const util = require("util");
+const fs = require("fs");
+const path = require("path");
+const readFile = util.promisify(fs.readFile);
+const fileIterator = files => ({
+  [Symbol.asyncIterator]: () => ({
+    x: 0,
+    next() {
+      if (this.x >= files.length) {
+        return {
+          done: true
+        };
+      }
+      let file = files[this.x++];
+      return readFile(file, "utf8").then(data => ({
+        done: false,
+        value: data
+      }));
+    }
+  })
+});
+const files = [path.join(__dirname, "./files/demofile.txt"), path.join(__dirname, "./files/demofile2.txt")];
+(async () => {
+  for await (let x of fileIterator(files)) {
+    console.log(x);
+  }
+})();
